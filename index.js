@@ -12,16 +12,20 @@ const history = require('connect-history-api-fallback');
 // const bodyParser = require("body-parser")
 // const fs = require("fs")
 
+
 const app = express();
-app.use(history({
-    htmlAcceptHeaders: ['text/html', 'application/xhtml+xml']
-}));
-app.use(express.static("./page/"));
+// app.use('/', history());
+// app.use(history({
+//     htmlAcceptHeaders: ['text/html', 'application/xhtml+xml']
+// }));
+
+
 
 // app.use(bodyParser.urlencoded({
 //     extended: false
 // }))
 // app.use(bodyParser.json())
+
 
 
 app.get('/api/queryCar', loader.get("/queryAllCar"))
@@ -49,6 +53,18 @@ app.get('/api/:filename', (req, res) => {
     );
     res.download(absPath, req.params.filename);
 })
+
+
+app.use(history({
+    rewrites: [{
+        from: /^\/api\/.*$/,
+        to: function(context) {
+            return context.parsedUrl.pathname;
+        }
+    }]
+}));
+app.use(express.static("./page/"));
+
 
 // 删除
 // app.get("/api/del/:id", );

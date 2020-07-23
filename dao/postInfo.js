@@ -1,4 +1,4 @@
-var dbutil = require("./DButil");
+var dbutil = require("./dbutil");
 
 function insertdetail(title, content, time, callback) {
     var insertSql = "insert into article (`title`,`content`,`time`) values(?,?,?);";

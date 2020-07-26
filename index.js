@@ -35,6 +35,9 @@ app.post('/api/insertMessage', loader.get("/insertMessage"))
 
 app.get('/api/querydetail', loader.get("/querydetail"))
 app.get('/api/querytArticle', loader.get("/querytArticle"))
+
+app.get('/api/querytArticleByType', loader.get("/querytArticleByType"))
+
 app.get('/api/querytMessage', loader.get("/querytMessage"))
 app.get('/api/deltMessage/:id', loader.get("/delMessage"))
 
@@ -44,6 +47,14 @@ app.get('/api/deltWz/:id', loader.get("/delWz"))
 app.get('/api/queryPrice', loader.get("/queryPrice"))
 app.get('/api/queryArticleByPage', loader.get("/queryArticleByPage"))
 app.get('/api/querydetail', loader.get("/querydetail"))
+
+
+
+
+
+// app.get('/management/:rout', (req, res) => {
+//     return res.send("./page/index.html");
+// })
 
 app.get('/api/:filename', (req, res) => {
     const absPath = path.resolve(
@@ -56,12 +67,14 @@ app.get('/api/:filename', (req, res) => {
 
 
 app.use(history({
-    rewrites: [{
-        from: /^\/api\/.*$/,
-        to: function(context) {
-            return context.parsedUrl.pathname;
-        }
-    }]
+    rewrites: [
+        // { from: /^\/management\/.*$/, to: function(context) { return context.parsedUrl.pathname; } },
+        // { from: /\/management/, to: '/management/messages' }
+
+    ],
+
+
+
 }));
 app.use(express.static("./page/"));
 

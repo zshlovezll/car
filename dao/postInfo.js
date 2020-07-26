@@ -1,9 +1,9 @@
 var dbutil = require("./dbutil");
 
-function insertdetail(title, content, time, callback) {
-    var insertSql = "insert into article (`title`,`content`,`time`) values(?,?,?);";
+function insertdetail(title, content, time, type, callback) {
+    var insertSql = "insert into article (`title`,`content`,`time`,`type`) values(?,?,?,?);";
 
-    var params = [title, content, time];
+    var params = [title, content, time, type];
 
     var con = dbutil.createConnection();
     con.connect();
@@ -15,7 +15,6 @@ function insertdetail(title, content, time, callback) {
             console.log(error);
         }
     });
-
     con.end()
 }
 

@@ -27,7 +27,7 @@ function editDetail(req, res) {
         // console.log("query", query)
         // console.log(query.title, query.time, query.content)
         // console.log("obj", obj)
-        postInfo.insertdetail(query.title, query.content, query.time, function(result) {
+        postInfo.insertdetail(query.title, query.content, query.time, query.type, function(result) {
             // res.set('content-type', 'application/json;charset=UTF-8')
             res.writeHead(200);
             res.write(respUtil.writeResult("success", "添加成功", null));

@@ -94,6 +94,27 @@ function querytArticle(callback) {
 
 module.exports.querytArticle = querytArticle;
 
+function querytArticleByType(type, callback) {
+
+    var qerySql = "select * from article where type = ? order by id desc";
+    var params = [type];
+
+    var con = dbutil.createConnection();
+    con.connect();
+
+    con.query(qerySql, params, function(error, result) {
+        if (error === null) {
+            callback(result);
+        } else {
+            console.log(error);
+        }
+    });
+
+    con.end()
+}
+
+module.exports.querytArticleByType = querytArticleByType;
+
 function queryArticleByPage(page, pageSize, success) {
     var insertSql = "select * from article order by id desc limit ?, ?;";
     var params = [page, pageSize];

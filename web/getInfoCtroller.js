@@ -52,6 +52,17 @@ function querytArticle(req, res) {
 }
 path.set("/querytArticle", querytArticle);
 
+function querytArticleByType(req, res) {
+    var params = url.parse(req.url, true).query;
+
+    getInfo.querytArticleByType(+params.type, function(result) {
+        res.writeHead(200);
+        res.write(respUtil.writeResult("success", "查询成功", result));
+        res.end();
+    })
+}
+path.set("/querytArticleByType", querytArticleByType);
+
 function queryArticleByPage(req, res) {
     var params = url.parse(req.url, true).query;
     getInfo.queryArticleByPage(parseInt(params.page), parseInt(params.pageSize), function(result) {

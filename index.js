@@ -4,13 +4,40 @@ var globalConfig = require("./config")
 const formidable = require("formidable")
 const path = require("path")
 const history = require('connect-history-api-fallback');
-// const os = require("os")
-// const multer = require("multer")
-// const upload = multer({
-//     dest: 'uploads/'
-// })
-// const bodyParser = require("body-parser")
-// const fs = require("fs")
+
+
+var multer = require('multer')
+
+var storage = multer.diskStorage({
+        destination: function(req, file, cb) {
+            cb(null, path.resolve(__dirname, "./page/upload"))
+        },
+        filename: function(req, file, cb) {
+            const timeStamp = Date.now();
+            const ramdomStr = Math.random().toString(36).slice(-6);
+            const ext = path.extname(file.originalname);
+            const filenmae = `${timeStamp}-${ramdomStr}${ext}`
+            cb(null, filenmae)
+        }
+    })
+    // const extArr = [];
+var upload = multer({
+    storage,
+    limits: {
+
+    },
+    fileFilter(req, file, cb) {
+        const ext = path.extname(file.originalname);
+        const whiteList = ['.jpg', '.png', '.gif', '.jpeg']
+        if (whiteList.includes(ext)) {
+            cb(null, true)
+        } else {
+            cb(new Error('I don\'t have a clue!'))
+        }
+
+    }
+}).array('image', 12)
+
 
 
 const app = express();
@@ -21,17 +48,25 @@ const app = express();
 
 
 
-// app.use(bodyParser.urlencoded({
-//     extended: false
-// }))
-// app.use(bodyParser.json())
-
-
-
 app.get('/api/queryCar', loader.get("/queryAllCar"))
 app.post('/api/editDetail', loader.get("/editDetail"))
 
 app.post('/api/insertMessage', loader.get("/insertMessage"))
+
+app.post('/api/upLoadImg', upload, (req, res) => {
+
+    // 一切都好
+    const urlArr = []
+    req.files.forEach((item, index) => {
+        urlArr.push(`/upload/${item.filename}`)
+    })
+    res.send({
+        code: 0,
+        data: urlArr,
+        msg: ""
+    })
+})
+
 
 app.get('/api/querydetail', loader.get("/querydetail"))
 app.get('/api/querytArticle', loader.get("/querytArticle"))
@@ -48,14 +83,6 @@ app.get('/api/queryPrice', loader.get("/queryPrice"))
 app.get('/api/queryArticleByPage', loader.get("/queryArticleByPage"))
 app.get('/api/querydetail', loader.get("/querydetail"))
 
-
-
-
-
-// app.get('/management/:rout', (req, res) => {
-//     return res.send("./page/index.html");
-// })
-
 app.get('/api/:filename', (req, res) => {
     const absPath = path.resolve(
         __dirname,
@@ -65,33 +92,23 @@ app.get('/api/:filename', (req, res) => {
     res.download(absPath, req.params.filename);
 })
 
+app.use((err, req, res, next) => {
+    // console.log(TypeError(err))
+    if (err) {
+        res.status(500).send(err.message);
+        // if (err instanceof multer.MulterError) {
+        //     console.log(2)
+        //         // 发生错误
+        //     alert("请传入图片")
+        //         // 
+        // }
+    }
 
-app.use(history({
-    rewrites: [
-        // { from: /^\/management\/.*$/, to: function(context) { return context.parsedUrl.pathname; } },
-        // { from: /\/management/, to: '/management/messages' }
 
-    ],
+})
 
-
-
-}));
+app.use(history());
 app.use(express.static("./page/"));
-
-
-// 删除
-// app.get("/api/del/:id", );
-
-// var connect = require('connect');
-
-// app = connect()
-//     .use(history())
-//     .listen(globalConfig.port, function() {
-//         console.log("服务器启动")
-//     });
-
-
-
 
 app.listen(globalConfig.port, function() {
     console.log("服务器启动")

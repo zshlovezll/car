@@ -2,7 +2,11 @@ var postInfo = require("../dao/postInfo.js");
 var TimeUtil = require("../util/TimeUtil");
 var respUtil = require("../util/RespUtil");
 var url = require("url");
-const { json } = require("express");
+var path = require("path")
+
+
+
+
 
 const qs = require("qs")
 var path = new Map();
@@ -60,6 +64,16 @@ function insertMessage(req, res) {
 }
 
 path.set("/insertMessage", insertMessage);
+
+function upLoadImg(req, res) {
+    // res.write("发出一个请求")
+    // console.log("asas")
+    // return upload.single("img")
+
+}
+
+path.set("/upLoadImg", upLoadImg);
+
 
 
 module.exports.path = path

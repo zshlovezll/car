@@ -74,6 +74,7 @@ app.get('/api/querytArticle', loader.get("/querytArticle"))
 app.get('/api/querytArticleByType', loader.get("/querytArticleByType"))
 
 app.get('/api/querytMessage', loader.get("/querytMessage"))
+
 app.get('/api/deltMessage/:id', loader.get("/delMessage"))
 
 app.get('/api/deltWz/:id', loader.get("/delWz"))

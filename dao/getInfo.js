@@ -135,7 +135,7 @@ module.exports.queryArticleByPage = queryArticleByPage;
 
 function querytMessage(callback) {
 
-    var qerySql = "select * from Message order by id desc";
+    var qerySql = "select * from message order by id desc";
     var params = [];
 
     var con = dbutil.createConnection();
@@ -153,6 +153,8 @@ function querytMessage(callback) {
 }
 
 module.exports.querytMessage = querytMessage;
+
+
 
 function delMessage(id, callback) {
 

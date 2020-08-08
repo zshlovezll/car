@@ -84,6 +84,9 @@ function querytMessage(req, res) {
 }
 path.set("/querytMessage", querytMessage);
 
+
+
+
 function delMessage(req, res) {
     let arr = req.url.split("/");
     let id = arr[arr.length - 1]

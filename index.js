@@ -31,7 +31,6 @@ app.get("/api/note", (req, res) => {
         if (Code == 'OK') {
             res.send({
                     msg: "ok",
-                    code: str1
                 })
                 // console.log(result)
         }

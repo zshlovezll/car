@@ -103,6 +103,22 @@ function delMessage(req, res) {
 path.set("/delMessage", delMessage);
 
 
+function delCarInfo(req, res) {
+    let arr = req.url.split("/");
+    let id = arr[arr.length - 1]
+        // console.log(id)
+        // var params = url.parse(req.url, true).query;
+        // console.log(params.id, typeof params.id)
+
+    getInfo.delCarInfo(parseInt(id), function(result) {
+        res.writeHead(200);
+        res.write(respUtil.writeResult("success", "删除成功", null));
+        res.end();
+    })
+}
+path.set("/delCarInfo", delCarInfo);
+
+
 function delWz(req, res) {
     let arr = req.url.split("/");
     let id = arr[arr.length - 1]

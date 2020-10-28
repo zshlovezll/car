@@ -76,4 +76,25 @@ path.set("/upLoadImg", upLoadImg);
 
 
 
+
+function insertCarInfo(req, res) {
+    let result = "";
+    req.on("data", function(data) {
+        result += data.toString("utf-8")
+    })
+    req.on("end", function() {
+        let query = qs.parse(result)
+        console.log(query)
+        postInfo.insertCarInfo(query.title, query.carName, query.drivingPrices, query.meals, query.people, query.color, query.brand, query.infoaa, query.infoab, query.infoac, query.infoad, query.infoae, query.infoba, query.infobb, query.infobc, query.infobd, query.infobe, query.infoca, query.infocb, query.infocc, query.infocd, query.infoce, query.image, function(result) {
+            res.writeHead(200);
+            res.write(respUtil.writeResult("success", "插入成功", null));
+            res.end()
+
+        })
+
+    })
+}
+
+path.set("/insertCarInfo", insertCarInfo);
+
 module.exports.path = path

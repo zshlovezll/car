@@ -178,6 +178,29 @@ function delMessage(id, callback) {
 module.exports.delMessage = delMessage;
 
 
+
+function delCarInfo(id, callback) {
+
+    var qerySql = "delete from models where id = ?";
+    var params = [id];
+
+    var con = dbutil.createConnection();
+    con.connect();
+
+    con.query(qerySql, params, function(error, result) {
+        if (error === null) {
+            callback(result);
+        } else {
+            console.log(error);
+        }
+    });
+
+    con.end()
+}
+
+module.exports.delCarInfo = delCarInfo;
+
+
 function delWz(id, callback) {
 
     var qerySql = "delete from article where id = ?";

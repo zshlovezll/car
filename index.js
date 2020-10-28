@@ -4,8 +4,48 @@ var globalConfig = require("./config")
 const formidable = require("formidable")
 const path = require("path")
 const history = require('connect-history-api-fallback');
+const app = express();
+var url = require("url");
+
+//开始引入模块
+const SMSClient = require('@alicloud/sms-sdk')
+
+app.get("/api/note", (req, res) => {
+    var params = url.parse(req.url, true).query;
+    // console.log(params)
+    const phoneNum = "16620553301"
+        // console.log("手机号码", obj.phoneNum)
+    accessKeyId = 'LTAI4G9FmobqjRCbiLFDSYV7'; //你自己的accessKeyId 在用户信息管理中可以看到
+    secretAccessKey = 'QEsTabGnnd8STNJXZWioqXa4m3Y6hQ'; //你自己的secretAccessKey  在用户信息管理中可以看到
+    //初始化sms_client
+    let smsClient = new SMSClient({ accessKeyId, secretAccessKey });
+
+    // 开始发送短信
+    smsClient.sendSMS({
+        PhoneNumbers: phoneNum,
+        SignName: "速途汽车租赁", //你自己的签名管理中
+        TemplateCode: "SMS_204286193", //在模板管理中
+        TemplateParam: `{"name":'${params.name}',"phone":'${params.phone}'}`, //短信模板变量对应的实际值，JSON格式
+    }).then(result => {
+        let { Code } = result;
+        if (Code == 'OK') {
+            res.send({
+                    msg: "ok",
+                    code: str1
+                })
+                // console.log(result)
+        }
+    }).catch(err => {
+        console.log(err)
+        res.send({
+            msg: "fail"
+        })
+    })
+})
 
 
+
+// 图片上传
 var multer = require('multer')
 
 var storage = multer.diskStorage({
@@ -40,18 +80,14 @@ var upload = multer({
 
 
 
-const app = express();
-// app.use('/', history());
-// app.use(history({
-//     htmlAcceptHeaders: ['text/html', 'application/xhtml+xml']
-// }));
-
-
 
 app.get('/api/queryCar', loader.get("/queryAllCar"))
 app.post('/api/editDetail', loader.get("/editDetail"))
 
 app.post('/api/insertMessage', loader.get("/insertMessage"))
+
+app.post('/api/insertCarInfo', loader.get("/insertCarInfo"))
+
 
 app.post('/api/upLoadImg', upload, (req, res) => {
 
@@ -79,6 +115,9 @@ app.get('/api/deltMessage/:id', loader.get("/delMessage"))
 
 app.get('/api/deltWz/:id', loader.get("/delWz"))
 
+app.get('/api/delCarInfo/:id', loader.get("/delCarInfo"))
+
+
 
 app.get('/api/queryPrice', loader.get("/queryPrice"))
 app.get('/api/queryArticleByPage', loader.get("/queryArticleByPage"))
@@ -101,7 +140,6 @@ app.use((err, req, res, next) => {
         //     console.log(2)
         //         // 发生错误
         //     alert("请传入图片")
-        //         // 
         // }
     }
 

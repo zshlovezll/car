@@ -15,8 +15,8 @@ app.get("/api/note", (req, res) => {
     // console.log(params)
     const phoneNum = "16620553301"
         // console.log("手机号码", obj.phoneNum)
-    accessKeyId = 'LTAI4G9FmobqjRCbiLFDSYV7'; //你自己的accessKeyId 在用户信息管理中可以看到
-    secretAccessKey = 'QEsTabGnnd8STNJXZWioqXa4m3Y6hQ'; //你自己的secretAccessKey  在用户信息管理中可以看到
+    accessKeyId = ''; //你自己的accessKeyId 在用户信息管理中可以看到
+    secretAccessKey = ''; //你自己的secretAccessKey  在用户信息管理中可以看到
     //初始化sms_client
     let smsClient = new SMSClient({ accessKeyId, secretAccessKey });
 
@@ -24,7 +24,7 @@ app.get("/api/note", (req, res) => {
     smsClient.sendSMS({
         PhoneNumbers: phoneNum,
         SignName: "速途汽车租赁", //你自己的签名管理中
-        TemplateCode: "SMS_204286193", //在模板管理中
+        TemplateCode: "", //在模板管理中
         TemplateParam: `{"name":'${params.name}',"phone":'${params.phone}'}`, //短信模板变量对应的实际值，JSON格式
     }).then(result => {
         let { Code } = result;
